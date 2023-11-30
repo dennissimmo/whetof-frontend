@@ -1,3 +1,46 @@
 <div class="container">
-  <tree-root [nodes]="nodes" [options]="options" (nodeActivate)="onNodeActivate($event)"></tree-root>
+<!--  <tree-root [nodes]="nodes" [options]="options" (nodeActivate)="onNodeActivate($event)"></tree-root>-->
+  <p-table [value]="points" [columns]="currencies" [tableStyle]="{'min-width': '50rem'}">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th rowspan="2">Exchange Point</th>
+        <th colspan="2" *ngFor="let column of columns">{{ column }}</th>
+      </tr>
+      <tr>
+        <ng-container *ngFor="let column of columns">
+          <th>Buy course</th>
+          <th>Sell Course</th>
+        </ng-container>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-point let-columns="columns">
+      <tr >
+        <td>{{ point.name }}</td>
+        <ng-container *ngFor="let col of columns">
+          <td [pEditableColumn]="point.courses[col]?.buyCourse" pEditableColumnField="col">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="point.courses[col].buyCourse" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ point.courses[col]?.buyCourse | currency: col }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td [pEditableColumn]="point.courses[col]?.sellCourse" pEditableColumnField="col">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input pInputText type="text" [(ngModel)]="point.courses[col].sellCourse" />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ point.courses[col]?.sellCourse | currency: col }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+<!--          <td>{{ point.courses[col].buyCourse | currency: col}}</td>-->
+<!--          <td>{{ point.courses[col].sellCourse | currency: col }}</td>-->
+        </ng-container>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
